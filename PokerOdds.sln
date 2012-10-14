@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "PokerOdds.Azure", "PokerOdds.Azure\PokerOdds.Azure.ccproj", "{F22320CF-71F8-47EF-9C12-F81A16480A90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.Mvc.Web", "PokerOdds.Mvc.Web\PokerOdds.Mvc.Web.csproj", "{DC338043-19DC-48FF-AC51-FF11E3CE9C64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.Mvc.Web.Tests", "PokerOdds.Mvc.Web.Tests\PokerOdds.Mvc.Web.Tests.csproj", "{BF77FCB2-947E-441F-8D44-C47E15D300BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.HandEvaluator", "PokerOdds.HandEvaluator\PokerOdds.HandEvaluator.csproj", "{5E185038-7473-42A9-B303-B2AA147C1157}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F22320CF-71F8-47EF-9C12-F81A16480A90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22320CF-71F8-47EF-9C12-F81A16480A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22320CF-71F8-47EF-9C12-F81A16480A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F22320CF-71F8-47EF-9C12-F81A16480A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC338043-19DC-48FF-AC51-FF11E3CE9C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC338043-19DC-48FF-AC51-FF11E3CE9C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC338043-19DC-48FF-AC51-FF11E3CE9C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC338043-19DC-48FF-AC51-FF11E3CE9C64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF77FCB2-947E-441F-8D44-C47E15D300BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF77FCB2-947E-441F-8D44-C47E15D300BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF77FCB2-947E-441F-8D44-C47E15D300BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF77FCB2-947E-441F-8D44-C47E15D300BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E185038-7473-42A9-B303-B2AA147C1157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E185038-7473-42A9-B303-B2AA147C1157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E185038-7473-42A9-B303-B2AA147C1157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E185038-7473-42A9-B303-B2AA147C1157}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Test";
+}
+
+<h2>@ViewBag.Test</h2>
+
+<form data-bind="submit: getOdds">
+    Pocket: <input data-bind="value: pocket, disable: inProgress" placeholder="Enter the cards in your hand" />
+    Board: <input data-bind="value: board, disable: inProgress" placeholder="Enter the cards on the board" />
+    <button data-bind="disable: inProgress" type="submit">Get Odds</button>
+    <img src="~/Images/loading.gif" alt="loading" data-bind="visible: inProgress" width="16" height="16" />
+</form>
+
+<ul data-bind="foreach: outcomes, visible: outcomes().length > 0">
+    <li>
+        <span data-bind="text: handTypeName">&nbsp;</span> - 
+        <span data-bind="text: winPercentage">&nbsp;</span>%
+    </li> 
+</ul>
+
+<p data-bind="visible: outcomes().length > 0">
+    Overall Win/Split - <span data-bind="text: overallWinSplitPercentage">&nbsp;</span>%
+</p>
+
+@section scripts{
+    <script type="text/javascript">
+        (function ()
+        {
+            function OddsResult(data)
+            {
+                this.handTypeName = ko.observable(data.HandTypeName);
+                this.winPercentage = ko.observable(data.WinPercentage);
+            }
+
+            function OddsViewModel()
+            {
+                // Data
+                var self = this;
+
+                self.pocket = ko.observable();
+                self.board = ko.observable();
+
+                self.outcomes = ko.observableArray([]);
+
+                self.overallWinSplitPercentage = ko.observable();
+
+                self.inProgress = ko.observable();
+
+                // Operations
+                self.getOdds = function ()
+                {
+                    self.inProgress(true);
+
+                    $.getJSON("/api/TexasHoldem/?pocket=" + self.pocket() + "&board=" + self.board(), function (result)
+                    {
+                        var mappedOutcomes = $.map(result.Outcomes, function (item) { return new OddsResult(item) });
+                        self.outcomes(mappedOutcomes);
+
+                        self.overallWinSplitPercentage(result.OverallWinSplitPercentage);
+
+                        self.inProgress(false);
+                    });
+                };
+            }
+
+            ko.applyBindings(new OddsViewModel());
+        } ());
+    </script>
+}
