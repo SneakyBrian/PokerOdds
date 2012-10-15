@@ -14,6 +14,10 @@ namespace PokerOdds.Mvc.Web.Models.TexasHoldem
         public PokerOutcome[] Outcomes { get; set; }
 
         public double OverallWinSplitPercentage { get; set; }
+
+        public bool Completed { get; set; }
+
+        public long CalculationTimeMS { get; set; }
     }
 
     public class PokerOutcome

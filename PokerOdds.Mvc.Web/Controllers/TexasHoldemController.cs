@@ -8,6 +8,7 @@ using HoldemHand;
 using PokerOdds.Mvc.Web.Models.TexasHoldem;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 
 namespace PokerOdds.Mvc.Web.Controllers
 {
@@ -32,6 +33,9 @@ namespace PokerOdds.Mvc.Web.Controllers
 
             // Count of total hands examined.
             long count = 0;
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
 
             // Iterate through all possible opponent hands
             foreach (ulong opponentMask in Hand.Hands(0UL, partialBoard | playerMask, 2).AsParallel())
@@ -61,8 +65,16 @@ namespace PokerOdds.Mvc.Web.Controllers
                         opponentWins[Hand.HandType(opponentHandValue)] += 0.5;
                     }
                     count++;
+
+                    if (stopWatch.Elapsed > TimeSpan.FromSeconds(10))
+                        break;
                 }
+
+                if (stopWatch.Elapsed > TimeSpan.FromSeconds(10))
+                    break;
             }
+
+            stopWatch.Stop();
 
             var outcomes = new List<PokerOutcome>();
 
@@ -81,7 +93,9 @@ namespace PokerOdds.Mvc.Web.Controllers
                 Pocket = pocket,
                 Board = board,
                 Outcomes = outcomes.ToArray(),
-                OverallWinSplitPercentage = outcomes.Sum(o => o.WinPercentage)
+                OverallWinSplitPercentage = outcomes.Sum(o => o.WinPercentage),
+                CalculationTimeMS = stopWatch.ElapsedMilliseconds,
+                Completed = stopWatch.Elapsed <= TimeSpan.FromSeconds(10)
             };
 
             return results;

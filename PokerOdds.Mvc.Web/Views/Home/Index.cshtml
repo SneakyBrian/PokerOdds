@@ -45,6 +45,12 @@
             </tr> 
         </table>
 
+        <p data-bind="visible: outcomes().length > 0">
+            Completed: <span data-bind="text: completed">&nbsp;</span> - 
+            Took <span data-bind="text: elapsedMS">&nbsp;</span> Milliseconds
+        </p>
+
+
     </section>
 </div>
 
@@ -72,6 +78,10 @@
 
                 self.inProgress = ko.observable();
 
+                self.completed = ko.observable();
+
+                self.elapsedMS = ko.observable();
+
                 // Operations
                 self.getOdds = function ()
                 {
@@ -80,12 +90,15 @@
                     $.getJSON("/api/TexasHoldem/?pocket=" + self.pocket() + "&board=" + self.board(), function (result)
                     {
                         var mappedOutcomes = $.map(result.Outcomes, function (item) { return new OddsResult(item) });
-                        
+
                         mappedOutcomes.push(new OddsResult({ HandTypeName: "Overall Win/Split", WinPercentage: result.OverallWinSplitPercentage }));
-                        
+
                         self.outcomes(mappedOutcomes);
 
                         self.overallWinSplitPercentage(result.OverallWinSplitPercentage);
+
+                        self.completed(result.Completed);
+                        self.elapsedMS(result.CalculationTimeMS);
 
                         self.inProgress(false);
                     });
