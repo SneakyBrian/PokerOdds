@@ -38,16 +38,12 @@
             <img src="~/Images/loading.gif" alt="loading" data-bind="visible: inProgress" width="16" height="16" />
         </form>
 
-        <ul data-bind="foreach: outcomes, visible: outcomes().length > 0">
-            <li>
-                <span data-bind="text: handTypeName">&nbsp;</span> - 
-                <span data-bind="text: winPercentage">&nbsp;</span>%
-            </li> 
-        </ul>
-
-        <p data-bind="visible: outcomes().length > 0">
-            Overall Win/Split - <span data-bind="text: overallWinSplitPercentage">&nbsp;</span>%
-        </p>
+        <table data-bind="foreach: outcomes, visible: outcomes().length > 0">
+            <tr>
+                <td><span data-bind="text: handTypeName">&nbsp;</span></td> 
+                <td><span data-bind="text: winPercentage">&nbsp;</span>%</td>
+            </tr> 
+        </table>
 
     </section>
 </div>
@@ -84,6 +80,9 @@
                     $.getJSON("/api/TexasHoldem/?pocket=" + self.pocket() + "&board=" + self.board(), function (result)
                     {
                         var mappedOutcomes = $.map(result.Outcomes, function (item) { return new OddsResult(item) });
+                        
+                        mappedOutcomes.push(new OddsResult({ HandTypeName: "Overall Win/Split", WinPercentage: result.OverallWinSplitPercentage }));
+                        
                         self.outcomes(mappedOutcomes);
 
                         self.overallWinSplitPercentage(result.OverallWinSplitPercentage);
