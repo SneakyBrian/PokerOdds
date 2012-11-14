@@ -6,7 +6,7 @@ Poker Odds API is an example API built using ASP.NET MVC Web API. Given a Texas 
 
 Poker Odds uses the excellent [PokerHandEval code written by Keith Rule](http://www.codeproject.com/Articles/12279/Fast-Texas-Holdem-Hand-Evaluation-and-Analysis) (based in turn on the [poker-eval library](http://pokersource.sourceforge.net/)). Users of the API submit information on their hand, and get back information on the possible outcomes of the game.
 
-Cards are submitted as a sequence of two character codes separated by spaces. For example, to specify that your pocket cards are the two of diamonds and the queen of clubs, you would pass "2d qc" as the pocket parameter. If you wanted to pass 7 Hearts, Ace of Spades and 10 Hearts as the board, you would specify this as "7h as th". Note that the characer t indicates 10.
+Cards are submitted as a sequence of two character codes separated by spaces. For example, to specify that your pocket cards are the two of diamonds and the queen of clubs, you would pass "2d qc" as the pocket parameter. If you wanted to pass 7 Hearts, Ace of Spades and 10 Hearts as the board, you would specify this as "7h as th". Note that the characer "t" indicates 10.
 
 ## Live Demo ##
 
@@ -16,11 +16,12 @@ A live demo is hosted at [http://pokerodds.azurewebsites.net/](http://pokerodds.
 
 Requesting the following url (in Firefox or Chrome, which specify XML by default):
 
-[http://pokerodds.azurewebsites.net//api/TexasHoldem/?pocket=2d%20qc&board=7h%20as%20th](http://pokerodds.azurewebsites.net//api/TexasHoldem/?pocket=2d%20qc&board=7h%20as%20th)
+[http://pokerodds.azurewebsites.net/api/TexasHoldem/?pocket=2d%20qc&board=7h%20as%20th](http://pokerodds.azurewebsites.net//api/TexasHoldem/?pocket=2d%20qc&board=7h%20as%20th)
 
 Results in the response:
 
-`<TexasHoldemOdds xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PokerOdds.Mvc.Web.Models.TexasHoldem">
+`
+<TexasHoldemOdds xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PokerOdds.Mvc.Web.Models.TexasHoldem">
 	<Board>7h as th</Board>
 	<CalculationTimeMS>1678</CalculationTimeMS>
 	<Completed>true</Completed>
@@ -73,11 +74,13 @@ Results in the response:
 	</Outcomes>
 	<OverallWinSplitPercentage>35.884515833637018</OverallWinSplitPercentage>
 	<Pocket>2d qc</Pocket>
-</TexasHoldemOdds>`
+</TexasHoldemOdds>
+`
 
 Or the same url in IE results in a JSON formatted response:
 
-`{
+`
+{
 	"Pocket" : "2d qc",
 	"Board" : "7h as th",
 	"Outcomes" : [{
@@ -121,7 +124,8 @@ Or the same url in IE results in a JSON formatted response:
 	"OverallWinSplitPercentage" : 35.884515833637018,
 	"Completed" : true,
 	"CalculationTimeMS" : 1816
-}`
+}
+`
 
 ## Technology Used ##
 
