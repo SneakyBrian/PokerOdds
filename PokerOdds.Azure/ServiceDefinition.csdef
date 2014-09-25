@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="PokerOdds.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-05.1.7">
-  <WebRole name="PokerOdds.Mvc.Web" vmsize="Small">
+<ServiceDefinition name="PokerOdds.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-01.2.3">
+  <WebRole name="PokerOdds.Mvc.Web" vmsize="ExtraSmall">
     <Sites>
       <Site name="Web">
         <Bindings>
@@ -14,5 +14,24 @@
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <LocalResources></LocalResources>
+  </WebRole>
+  <WebRole name="PokerOdds.Web.OWIN" vmsize="ExtraSmall">
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="Endpoint1" endpointName="Endpoint1" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="Endpoint1" protocol="http" port="8080" />
+    </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
+    <LocalResources>
+      <LocalStorage name="fileCache" cleanOnRoleRecycle="false" />
+    </LocalResources>
   </WebRole>
 </ServiceDefinition>
