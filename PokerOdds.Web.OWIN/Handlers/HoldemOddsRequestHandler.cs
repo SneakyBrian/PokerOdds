@@ -30,7 +30,7 @@ namespace PokerOdds.Web.OWIN.Handlers
                 board = string.Empty;
             }
 
-            var odds = new TexasHoldemOdds { Pocket = pocket, Board = board };
+            var odds = new TexasHoldemOdds { Pocket = SortCards(pocket), Board = SortCards(board) };
 
             var cacheOdds = Cache.Get(odds.GetCacheKey()) as TexasHoldemOdds;
 
@@ -81,5 +81,14 @@ namespace PokerOdds.Web.OWIN.Handlers
         }
 
         public ObjectCache Cache { get; set; }
+
+        private string SortCards(string cards)
+        {
+            var cardList = cards.Trim().ToLowerInvariant().Split(' ').ToList();
+
+            cardList.Sort();
+
+            return cardList.Aggregate(string.Empty, (a, b) => string.Format("{0} {1}", a.Trim(), b.Trim())).Trim();
+        }
     }
 }

@@ -20,8 +20,7 @@ namespace PokerOdds.Web.OWIN.Model
             {
                 outcomes.Add(new PokerOutcome
                 {
-                    HandType = (Hand.HandTypes)index,
-                    HandTypeName = ((Hand.HandTypes)index).ToString(),
+                    HandType = ((Hand.HandTypes)index).ToString(),
                     WinPercentage = 0
                 });
             }
@@ -70,15 +69,15 @@ namespace PokerOdds.Web.OWIN.Model
                             opponentWins[Hand.HandType(opponentHandValue)] += 0.5;
                         }
 
-                        count++;
-
-                        for (var index = 0; index < playerWins.Length; index++)
-                        {
-                            outcomes[index].WinPercentage = playerWins[index] / ((double)count) * 100.0;
-                        }
-
-                        Cache.Set(odds.GetCacheKey(), odds, CacheItemPolicy);
+                        count++;                       
                     }
+
+                    for (var index = 0; index < playerWins.Length; index++)
+                    {
+                        outcomes[index].WinPercentage = playerWins[index] / ((double)count) * 100.0;
+                    }
+
+                    Cache.Set(odds.GetCacheKey(), odds, CacheItemPolicy);
                 }
 
                 odds.OverallWinSplitPercentage = odds.Outcomes.Sum(o => o.WinPercentage);

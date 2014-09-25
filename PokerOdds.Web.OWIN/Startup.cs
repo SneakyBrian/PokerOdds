@@ -16,7 +16,7 @@ namespace PokerOdds.Web.OWIN
         {
             var cachePath = RoleEnvironment.IsAvailable ?
                 RoleEnvironment.GetLocalResource("fileCache").RootPath :
-                Path.Combine(Path.GetTempPath(), "XML2JSON.Web.OWIN");
+                Path.Combine(Path.GetTempPath(), "PokerOdds.Web.OWIN");
 
             Directory.CreateDirectory(cachePath);
 

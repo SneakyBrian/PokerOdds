@@ -36,10 +36,10 @@ namespace PokerOdds.Web.OWIN.Cache
         }
     }
 
+    [Serializable]
     public class PokerOutcome
     {
-        public Hand.HandTypes HandType { get; set; }
-        public string HandTypeName { get; set; }
+        public string HandType { get; set; }
         public double WinPercentage { get; set; }
     }
 }
