@@ -104,12 +104,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\TexasHoldemOdds.cs" />
     <Compile Include="Handlers\InvalidRequestHandler.cs" />
     <Compile Include="Handlers\HoldemOddsRequestHandler.cs" />
     <Compile Include="Interfaces\IHasCache.cs" />
     <Compile Include="Interfaces\IRequestHandler.cs" />
-    <Compile Include="Model\HoldemOddsCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routers\RequestRouter.cs" />
     <Compile Include="Startup.cs" />
@@ -121,6 +119,10 @@
     <ProjectReference Include="..\PokerOdds.HandEvaluator\PokerOdds.HandEvaluator.csproj">
       <Project>{5e185038-7473-42a9-b303-b2aa147c1157}</Project>
       <Name>PokerOdds.HandEvaluator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerOdds.HoldemOdds\PokerOdds.HoldemOdds.csproj">
+      <Project>{fe69a117-effa-4f1b-8b64-bd3096a53297}</Project>
+      <Name>PokerOdds.HoldemOdds</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

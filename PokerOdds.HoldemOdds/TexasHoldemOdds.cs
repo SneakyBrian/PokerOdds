@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using HoldemHand;
 
-namespace PokerOdds.Web.OWIN.Cache
+namespace PokerOdds.HoldemOdds
 {
     [Serializable]
     public class TexasHoldemOdds
@@ -27,7 +27,7 @@ namespace PokerOdds.Web.OWIN.Cache
 
         public string GetETag()
         {
-            var currentWinSplitPercentage = this.Outcomes.Sum(o => o.WinPercentage);
+            var currentWinSplitPercentage = this.Outcomes.Sum(o => o.WinChance);
 
             using (var hashAlgo = SHA1Managed.Create())
             {
@@ -40,6 +40,6 @@ namespace PokerOdds.Web.OWIN.Cache
     public class PokerOutcome
     {
         public string HandType { get; set; }
-        public double WinPercentage { get; set; }
+        public double WinChance { get; set; }
     }
 }

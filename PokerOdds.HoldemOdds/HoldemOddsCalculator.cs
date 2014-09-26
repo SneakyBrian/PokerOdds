@@ -1,38 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
 using System.Threading.Tasks;
-using System.Web;
 using HoldemHand;
-using PokerOdds.Web.OWIN.Cache;
-using PokerOdds.Web.OWIN.Interfaces;
 
-namespace PokerOdds.Web.OWIN.Model
+
+namespace PokerOdds.HoldemOdds
 {
-    public class HoldemOddsCalculator : IHasCache
+    public class HoldemOddsCalculator
     {
-        public async Task<TexasHoldemOdds> Calculate(TexasHoldemOdds odds)
+        public async Task<TexasHoldemOdds> Calculate(TexasHoldemOdds odds, Action<TexasHoldemOdds> saveState)
         {
             var outcomes = new List<PokerOutcome>();
 
-            for (var index = 0; index < 9; index++)
+            for (var index = 0; index < Enum.GetNames(typeof(Hand.HandTypes)).Length; index++)
             {
                 outcomes.Add(new PokerOutcome
                 {
                     HandType = ((Hand.HandTypes)index).ToString(),
-                    WinPercentage = 0
+                    WinChance = 0
                 });
             }
 
             odds.Outcomes = outcomes;
 
-            Cache.Set(odds.GetCacheKey(), odds, CacheItemPolicy);
+            if (saveState != null)
+            {
+                saveState(odds);
+            }
 
             return await Task<TexasHoldemOdds>.Run(() =>
             {
-                ulong playerMask = Hand.ParseHand(odds.Pocket); // Player Pocket Cards
-                ulong partialBoard = Hand.ParseHand(odds.Board);   // Partial Board
+                ulong playerMask = Hand.ParseHand(odds.Pocket);     // Player Pocket Cards
+                ulong partialBoard = Hand.ParseHand(odds.Board);    // Partial Board
 
                 // Calculate values for each hand type
                 double[] playerWins = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -74,23 +74,34 @@ namespace PokerOdds.Web.OWIN.Model
 
                     for (var index = 0; index < playerWins.Length; index++)
                     {
-                        outcomes[index].WinPercentage = playerWins[index] / ((double)count) * 100.0;
+                        outcomes[index].WinChance = playerWins[index] / ((double)count);
                     }
 
-                    Cache.Set(odds.GetCacheKey(), odds, CacheItemPolicy);
+                    if (saveState != null)
+                    {
+                        saveState(odds);
+                    }
                 }
 
-                odds.OverallWinSplitPercentage = odds.Outcomes.Sum(o => o.WinPercentage);
+                odds.OverallWinSplitPercentage = odds.Outcomes.Sum(o => o.WinChance);
                 odds.Completed = true;
 
-                Cache.Set(odds.GetCacheKey(), odds, CacheItemPolicy);
+                if (saveState != null)
+                {
+                    saveState(odds);
+                }
 
                 return odds;
             });
         }
 
-        public ObjectCache Cache { get; set; }
+        public static string SortCards(string cards)
+        {
+            var cardList = cards.Trim().ToLowerInvariant().Split(' ').ToList();
 
-        public CacheItemPolicy CacheItemPolicy { get; set; }
+            cardList.Sort();
+
+            return cardList.Aggregate(string.Empty, (a, b) => string.Format("{0} {1}", a.Trim(), b.Trim())).Trim();
+        }
     }
 }

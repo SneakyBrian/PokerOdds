@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
+﻿using System.Runtime.Caching;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.Owin;
 using PokerOdds.Web.OWIN.Handlers;
 using PokerOdds.Web.OWIN.Interfaces;

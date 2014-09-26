@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.HandEvaluator", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.Web.OWIN", "PokerOdds.Web.OWIN\PokerOdds.Web.OWIN.csproj", "{0DE4795E-6BCF-4C60-9C87-83F72862E6DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.HoldemOdds", "PokerOdds.HoldemOdds\PokerOdds.HoldemOdds.csproj", "{FE69A117-EFFA-4F1B-8B64-BD3096A53297}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerOdds.CachePrimer", "PokerOdds.CachePrimer\PokerOdds.CachePrimer.csproj", "{A28B76B7-7515-4C8B-A65F-732CB2B0ED75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{0DE4795E-6BCF-4C60-9C87-83F72862E6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DE4795E-6BCF-4C60-9C87-83F72862E6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DE4795E-6BCF-4C60-9C87-83F72862E6DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE69A117-EFFA-4F1B-8B64-BD3096A53297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE69A117-EFFA-4F1B-8B64-BD3096A53297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE69A117-EFFA-4F1B-8B64-BD3096A53297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE69A117-EFFA-4F1B-8B64-BD3096A53297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28B76B7-7515-4C8B-A65F-732CB2B0ED75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28B76B7-7515-4C8B-A65F-732CB2B0ED75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28B76B7-7515-4C8B-A65F-732CB2B0ED75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28B76B7-7515-4C8B-A65F-732CB2B0ED75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

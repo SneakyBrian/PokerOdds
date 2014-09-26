@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
-using System.Web;
-using HoldemHand;
 using Microsoft.Owin;
 using Newtonsoft.Json;
-using PokerOdds.Web.OWIN.Cache;
+using PokerOdds.HoldemOdds;
 using PokerOdds.Web.OWIN.Interfaces;
-using PokerOdds.Web.OWIN.Model;
 
 namespace PokerOdds.Web.OWIN.Handlers
 {
@@ -30,7 +25,7 @@ namespace PokerOdds.Web.OWIN.Handlers
                 board = string.Empty;
             }
 
-            var odds = new TexasHoldemOdds { Pocket = SortCards(pocket), Board = SortCards(board) };
+            var odds = new TexasHoldemOdds { Pocket = HoldemOddsCalculator.SortCards(pocket), Board = HoldemOddsCalculator.SortCards(board) };
 
             var cacheOdds = Cache.Get(odds.GetCacheKey()) as TexasHoldemOdds;
 
@@ -38,9 +33,9 @@ namespace PokerOdds.Web.OWIN.Handlers
             {
                 Cache.Add(odds.GetCacheKey(), odds, _policy);
 
-                var calculator = new HoldemOddsCalculator { Cache = Cache, CacheItemPolicy = _policy };
+                var calculator = new HoldemOddsCalculator();
 
-                cacheOdds = await calculator.Calculate(odds);
+                cacheOdds = await calculator.Calculate(odds, o => Cache.Set(odds.GetCacheKey(), odds, _policy));
             }
             //check If-None-Match header etag to see if it matches our data hash
             else if (context.Request.Headers["If-None-Match"] == cacheOdds.GetETag())
@@ -82,13 +77,6 @@ namespace PokerOdds.Web.OWIN.Handlers
 
         public ObjectCache Cache { get; set; }
 
-        private string SortCards(string cards)
-        {
-            var cardList = cards.Trim().ToLowerInvariant().Split(' ').ToList();
-
-            cardList.Sort();
-
-            return cardList.Aggregate(string.Empty, (a, b) => string.Format("{0} {1}", a.Trim(), b.Trim())).Trim();
-        }
+ 
     }
 }
