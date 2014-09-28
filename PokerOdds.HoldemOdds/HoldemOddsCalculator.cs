@@ -83,7 +83,7 @@ namespace PokerOdds.HoldemOdds
                     }
                 }
 
-                odds.OverallWinSplitPercentage = odds.Outcomes.Sum(o => o.WinChance);
+                odds.OverallWinSplitChance = odds.Outcomes.Sum(o => o.WinChance);
                 odds.Completed = true;
 
                 if (saveState != null)

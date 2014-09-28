@@ -16,7 +16,7 @@ namespace PokerOdds.HoldemOdds
 
         public IEnumerable<PokerOutcome> Outcomes { get; set; }
 
-        public double OverallWinSplitPercentage { get; set; }
+        public double OverallWinSplitChance { get; set; }
 
         public bool Completed { get; set; }
 
@@ -27,11 +27,11 @@ namespace PokerOdds.HoldemOdds
 
         public string GetETag()
         {
-            var currentWinSplitPercentage = this.Outcomes.Sum(o => o.WinChance);
+            var currentWinSplitChance = this.Outcomes.Sum(o => o.WinChance);
 
             using (var hashAlgo = SHA1Managed.Create())
             {
-                return String.Concat("\"", Convert.ToBase64String(hashAlgo.ComputeHash(Encoding.UTF8.GetBytes(string.Format("{0}-{1}-{2}-{3}", Pocket, Board, currentWinSplitPercentage, Completed)))), "\"");
+                return String.Concat("\"", Convert.ToBase64String(hashAlgo.ComputeHash(Encoding.UTF8.GetBytes(string.Format("{0}-{1}-{2}-{3}", Pocket, Board, currentWinSplitChance, Completed)))), "\"");
             }
         }
     }
