@@ -35,6 +35,16 @@ namespace PokerOdds.CachePrimer
 
             Directory.CreateDirectory(_outputPath);
 
+            bool overwrite = false;
+
+            if (args.Length > 1)
+            {
+                if (args[1].Equals("/overwrite", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    overwrite = true;
+                }
+            }
+
             var deck = GenerateDeck();
             var calculator = new HoldemOddsCalculator();
 
@@ -48,6 +58,13 @@ namespace PokerOdds.CachePrimer
                     if (i != j)
                     {
                         var odds = new TexasHoldemOdds { Pocket = HoldemOddsCalculator.SortCards(string.Format("{0} {1}", deck[i], deck[j])), Board = String.Empty };
+
+                        //if the file exists, and we are not overwriting, skip these cards
+                        if (File.Exists(Path.Combine(_outputPath, string.Format("{0}.json", odds.GetCacheKey()))) && !overwrite)
+                        {
+                            Console.WriteLine("Skipping odds for pocket {0}", odds.Pocket);
+                            continue;
+                        }
 
                         Console.WriteLine("Generating odds for pocket {0}", odds.Pocket);
 

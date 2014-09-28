@@ -2,6 +2,7 @@
 packages/*
 PokerOdds.Azure/bin/*
 PokerOdds.Azure/csx/Debug/*
+PokerOdds.Azure/csx/Release/*
 PokerOdds.Azure/obj/*
 *.user
 PokerOdds.HandEvaluator/bin/*
