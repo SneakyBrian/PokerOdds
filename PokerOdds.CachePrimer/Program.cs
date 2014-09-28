@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,15 @@ namespace PokerOdds.CachePrimer
         
         static void Main(string[] args)
         {
+            Console.WriteLine(Assembly.GetExecutingAssembly().GetName().FullName);
+            Console.WriteLine();
+
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Please specifiy output folder path");
+                return;
+            }
+
             _outputPath = args[0];
 
             Directory.CreateDirectory(_outputPath);
@@ -71,7 +81,11 @@ namespace PokerOdds.CachePrimer
                 }
             }
 
-            //Task.WaitAll(tasks.ToArray(), Timeout.Infinite);
+            if (tasks.Count > 0)
+            {
+                //wait for the remainder to complete
+                Task.WaitAll(tasks.ToArray(), Timeout.Infinite);
+            }
 
             var zipPath = Path.Combine(_outputPath, "PrimeCache.zip");
 
