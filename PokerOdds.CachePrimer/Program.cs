@@ -60,7 +60,7 @@ namespace PokerOdds.CachePrimer
                         var odds = new TexasHoldemOdds { Pocket = HoldemOddsCalculator.SortCards(string.Format("{0} {1}", deck[i], deck[j])), Board = String.Empty };
 
                         //if the file exists, and we are not overwriting, skip these cards
-                        if (File.Exists(Path.Combine(_outputPath, string.Format("{0}.json", odds.GetCacheKey()))) && !overwrite)
+                        if (!overwrite && File.Exists(Path.Combine(_outputPath, string.Format("{0}.json", odds.GetCacheKey()))))
                         {
                             Console.WriteLine("Skipping odds for pocket {0}", odds.Pocket);
                             continue;
