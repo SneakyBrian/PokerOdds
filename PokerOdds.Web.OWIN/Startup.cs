@@ -9,6 +9,7 @@ using PokerOdds.HoldemOdds;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace PokerOdds.Web.OWIN
 {
@@ -66,22 +67,39 @@ namespace PokerOdds.Web.OWIN
 
         private void PrimeCache()
         {
-            var policy = new CacheItemPolicy { Priority = CacheItemPriority.NotRemovable };
+            Task.Factory.StartNew(() => {
 
-            using (var cacheZip = ZipFile.Read(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.zip")))
-            {
-                foreach (var entry in cacheZip.Entries)
+                lock (_cache)
                 {
-                    using (var reader = new StreamReader(entry.OpenReader()))
+                    var policy = new CacheItemPolicy { Priority = CacheItemPriority.NotRemovable };
+
+                    using (var cacheZip = ZipFile.Read(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.zip")))
                     {
-                        var contents = reader.ReadToEnd();
+                        foreach (var entry in cacheZip.Entries)
+                        {
+                            using (var reader = new StreamReader(entry.OpenReader()))
+                            {
+                                var contents = reader.ReadToEnd();
 
-                        var odds = JsonConvert.DeserializeObject<TexasHoldemOdds>(contents);
+                                var odds = JsonConvert.DeserializeObject<TexasHoldemOdds>(contents);
 
-                        _cache.Add(odds.GetCacheKey(), odds, policy);
+                                var keys = new string[0];
+
+                                try
+                                {
+                                    keys = _cache.GetKeys();
+                                }
+                                catch (Exception) { }
+
+                                if (!keys.Contains(odds.GetCacheKey()))
+                                {
+                                    _cache.Add(odds.GetCacheKey(), odds, policy);
+                                }
+                            }
+                        }
                     }
                 }
-            }
+            });
         }
     }
 }
