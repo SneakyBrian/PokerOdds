@@ -38,14 +38,6 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PokerOdds.Mvc.Web\PokerOdds.Mvc.Web.csproj">
-      <Name>PokerOdds.Mvc.Web</Name>
-      <Project>{dc338043-19dc-48ff-ac51-ff11e3ce9c64}</Project>
-      <Private>True</Private>
-      <RoleType>Web</RoleType>
-      <RoleName>PokerOdds.Mvc.Web</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
     <ProjectReference Include="..\PokerOdds.Web.OWIN\PokerOdds.Web.OWIN.csproj">
       <Name>PokerOdds.Web.OWIN</Name>
       <Project>{0de4795e-6bcf-4c60-9c87-83f72862e6da}</Project>

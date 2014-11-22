@@ -28,8 +28,8 @@ namespace PokerOdds.Web.OWIN
             _cache = new FileCache(cachePath);
 
             _cache.MaxCacheSize = RoleEnvironment.IsAvailable ?
-                RoleEnvironment.GetLocalResource("fileCache").MaximumSizeInMegabytes * 1024 :
-                2048 * 1024; //2GB
+                RoleEnvironment.GetLocalResource("fileCache").MaximumSizeInMegabytes * 1024L * 1024L :
+                2048L * 1024L * 1024L; //2GB
 
             _cache.MaxCacheSizeReached += MaxCacheSizeReached;
 
@@ -49,7 +49,11 @@ namespace PokerOdds.Web.OWIN
                         .OfType<TexasHoldemOdds>()
                         .Where(odds => !odds.Completed))
             {
-                _cache.Remove(odds.GetCacheKey());
+                try
+                {
+                    _cache.Remove(odds.GetCacheKey());
+                }
+                catch { }
             }
 
             //if that has bought us some space
@@ -73,29 +77,26 @@ namespace PokerOdds.Web.OWIN
                 {
                     var policy = new CacheItemPolicy { Priority = CacheItemPriority.NotRemovable };
 
-                    using (var cacheZip = ZipFile.Read(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.zip")))
+                    TexasHoldemOdds[] oddsList;
+
+                    using (var cacheFile = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.json")))
                     {
-                        foreach (var entry in cacheZip.Entries)
+                        oddsList = JsonConvert.DeserializeObject<TexasHoldemOdds[]>(cacheFile.ReadToEnd());
+                    }
+
+                    foreach (var odds in oddsList)
+                    {
+                        var keys = new string[0];
+
+                        try
                         {
-                            using (var reader = new StreamReader(entry.OpenReader()))
-                            {
-                                var contents = reader.ReadToEnd();
+                            keys = _cache.GetKeys();
+                        }
+                        catch { }
 
-                                var odds = JsonConvert.DeserializeObject<TexasHoldemOdds>(contents);
-
-                                var keys = new string[0];
-
-                                try
-                                {
-                                    keys = _cache.GetKeys();
-                                }
-                                catch (Exception) { }
-
-                                if (!keys.Contains(odds.GetCacheKey()))
-                                {
-                                    _cache.Add(odds.GetCacheKey(), odds, policy);
-                                }
-                            }
+                        if (!keys.Contains(odds.GetCacheKey()))
+                        {
+                            _cache.Add(odds.GetCacheKey(), odds, policy);
                         }
                     }
                 }

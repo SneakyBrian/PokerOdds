@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ionic.Zip;
 using Newtonsoft.Json;
 using PokerOdds.HoldemOdds;
 
@@ -104,21 +103,40 @@ namespace PokerOdds.CachePrimer
                 Task.WaitAll(tasks.ToArray(), Timeout.Infinite);
             }
 
-            var zipPath = Path.Combine(_outputPath, "PrimeCache.zip");
+            var outPath = Path.Combine(_outputPath, "PrimeCache.json");
 
-            if (File.Exists(zipPath))
+            if (File.Exists(outPath))
             {
-                File.Delete(zipPath);
+                File.Delete(outPath);
             }
 
-            using (var outputArchive = new ZipFile(zipPath))
+            using (var outputArchive = new StreamWriter(outPath))
             {
-                //outputArchive.AddProgress += (s, e) => Console.WriteLine("Adding entry {0}", e.CurrentEntry.FileName);
-                outputArchive.SaveProgress += (s, e) => Console.WriteLine("Saving entry {0} of {1}", e.EntriesSaved, e.EntriesTotal);
+                bool firstItem = true;
 
-                outputArchive.AddFiles(Directory.GetFiles(_outputPath, "*.json"));
+                Directory.GetFiles(_outputPath, "*.json")
+                    .Where(filePath => !filePath.Equals(outPath, StringComparison.InvariantCultureIgnoreCase))
+                    .ToList().ForEach(filePath =>
+                    {
 
-                outputArchive.Save();
+                        if (firstItem)
+                        {
+                            outputArchive.Write("[");
+                            firstItem = false;
+                        }
+                        else
+                        {
+                            outputArchive.WriteLine(",");
+                        }
+
+                        using (var inputStream = new StreamReader(filePath))
+                        {
+                            outputArchive.Write(inputStream.ReadToEnd());
+                        }
+
+                    });
+
+                outputArchive.WriteLine("]");
             }
 
             Console.WriteLine("Job Done");
