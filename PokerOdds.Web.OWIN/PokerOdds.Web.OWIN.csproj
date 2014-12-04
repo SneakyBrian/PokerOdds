@@ -104,6 +104,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\FileBackedMemoryCache.cs" />
     <Compile Include="Handlers\InvalidRequestHandler.cs" />
     <Compile Include="Handlers\HoldemOddsRequestHandler.cs" />
     <Compile Include="Interfaces\IHasCache.cs" />

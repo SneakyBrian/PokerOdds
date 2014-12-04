@@ -6,16 +6,16 @@ using Owin;
 using PokerOdds.Web.OWIN.Routers;
 using System.Linq;
 using PokerOdds.HoldemOdds;
-using Ionic.Zip;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.Threading.Tasks;
+using PokerOdds.Web.OWIN.Cache;
 
 namespace PokerOdds.Web.OWIN
 {
     public class Startup
     {
-        private FileCache _cache = null;
+        private FileBackedMemoryCache _cache = null;
 
         public void Configuration(IAppBuilder app)
         {
@@ -25,7 +25,7 @@ namespace PokerOdds.Web.OWIN
 
             Directory.CreateDirectory(cachePath);
 
-            _cache = new FileCache(cachePath);
+            _cache = new FileBackedMemoryCache("cache", cachePath);
 
             _cache.MaxCacheSize = RoleEnvironment.IsAvailable ?
                 RoleEnvironment.GetLocalResource("fileCache").MaximumSizeInMegabytes * 1024L * 1024L :
