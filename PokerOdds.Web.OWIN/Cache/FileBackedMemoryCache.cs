@@ -89,6 +89,7 @@ namespace PokerOdds.Web.OWIN.Cache
             if (item == null)
             {
                 item = _fileCache.Get(key, regionName);
+                _memoryCache.Set(key, item, new CacheItemPolicy(), regionName);
             }
 
             return item;
@@ -101,6 +102,7 @@ namespace PokerOdds.Web.OWIN.Cache
             if (item == null)
             {
                 item = _fileCache.GetCacheItem(key, regionName);
+                _memoryCache.Set(item, new CacheItemPolicy());
             }
 
             return item;
