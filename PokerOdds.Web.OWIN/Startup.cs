@@ -71,36 +71,33 @@ namespace PokerOdds.Web.OWIN
 
         private void PrimeCache()
         {
-            Task.Factory.StartNew(() => {
+            lock (_cache)
+            {
+                var policy = new CacheItemPolicy { Priority = CacheItemPriority.NotRemovable };
 
-                lock (_cache)
+                TexasHoldemOdds[] oddsList;
+
+                using (var cacheFile = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.json")))
                 {
-                    var policy = new CacheItemPolicy { Priority = CacheItemPriority.NotRemovable };
+                    oddsList = JsonConvert.DeserializeObject<TexasHoldemOdds[]>(cacheFile.ReadToEnd());
+                }
 
-                    TexasHoldemOdds[] oddsList;
+                foreach (var odds in oddsList)
+                {
+                    var keys = new string[0];
 
-                    using (var cacheFile = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("PokerOdds.Web.OWIN.Cache.PrimeCache.json")))
+                    try
                     {
-                        oddsList = JsonConvert.DeserializeObject<TexasHoldemOdds[]>(cacheFile.ReadToEnd());
+                        keys = _cache.GetKeys();
                     }
+                    catch { }
 
-                    foreach (var odds in oddsList)
+                    if (!keys.Contains(odds.GetCacheKey()))
                     {
-                        var keys = new string[0];
-
-                        try
-                        {
-                            keys = _cache.GetKeys();
-                        }
-                        catch { }
-
-                        if (!keys.Contains(odds.GetCacheKey()))
-                        {
-                            _cache.Add(odds.GetCacheKey(), odds, policy);
-                        }
+                        _cache.Add(odds.GetCacheKey(), odds, policy);
                     }
                 }
-            });
+            }
         }
     }
 }
