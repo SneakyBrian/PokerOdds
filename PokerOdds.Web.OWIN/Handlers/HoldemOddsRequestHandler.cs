@@ -66,6 +66,9 @@ namespace PokerOdds.Web.OWIN.Handlers
             //set etag
             context.Response.ETag = cacheOdds.GetETag();
 
+            //Just in case, handle CORS
+            context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+
             await context.Response.WriteAsync(result);
         }
 

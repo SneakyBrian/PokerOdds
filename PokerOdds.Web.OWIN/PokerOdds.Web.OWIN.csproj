@@ -106,6 +106,7 @@
   <ItemGroup>
     <Compile Include="Cache\FileBackedMemoryCache.cs" />
     <Compile Include="Cache\MultiStageCache.cs" />
+    <Compile Include="Handlers\CORSRequestHandler.cs" />
     <Compile Include="Handlers\InvalidRequestHandler.cs" />
     <Compile Include="Handlers\HoldemOddsRequestHandler.cs" />
     <Compile Include="Interfaces\IHasCache.cs" />

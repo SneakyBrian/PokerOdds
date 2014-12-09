@@ -17,6 +17,13 @@ namespace PokerOdds.Web.OWIN.Routers
                 return;
             }
 
+            var corsRequestHandler = new CORSRequestHandler();
+            if (corsRequestHandler.CanHandleRequest(context))
+            {
+                await corsRequestHandler.HandleRequest(context);
+                return;
+            } 
+
             var invalidRequestHandler = new InvalidRequestHandler();
             if (invalidRequestHandler.CanHandleRequest(context))
             {
